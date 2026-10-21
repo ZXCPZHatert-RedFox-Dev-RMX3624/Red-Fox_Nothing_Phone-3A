@@ -1,0 +1,39 @@
+name: Red Fox Recovery Auto-Compiler
+
+on:
+  workflow_dispatch: # Запуск сборки вручную одной кнопкой на сайте!
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup Compilation Environment
+      run: |
+        sudo apt update
+        sudo apt install bc build-essential jsoncpp-dev libssl-dev google-perftools -y
+
+    - name: Clone Toolchain & Manifests
+      run: |
+        git clone https://github.com -b twrp-14.0 base_twrp/
+
+    - name: Integrate Red Fox Device Tree
+      run: |
+        mkdir -p base_twrp/device/nothing/pacman
+        cp -r device/nothing/pacman/* base_twrp/device/nothing/pacman/
+        cp *.mk base_twrp/device/nothing/pacman/
+
+    - name: Run Build Script
+      run: |
+        cd base_twrp/
+        chmod +x device/nothing/pacman/build_fox.sh
+        ./device/nothing/pacman/build_fox.sh
+
+    - name: Upload Final Red Fox Recovery
+      uses: actions/upload-artifact@v4
+      with:
+        name: Red-Fox-Recovery-Nothing-3A
+        path: base_twrp/out/target/product/pacman/recovery.img
+
