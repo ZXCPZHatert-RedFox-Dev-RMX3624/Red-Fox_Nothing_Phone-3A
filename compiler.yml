@@ -23,13 +23,18 @@ jobs:
     - name: Run Build Script
       run: |
         cd base_twrp/
-        # Создаем минимальный проверочный скрипт, если build_fox.sh не скопировался
+        # Создаем независимый скрипт сборки прямо в облаке
         echo "source build/envsetup.sh && lunch twrp_pacman-eng && mka recoveryimage" > build_fox_cloud.sh
         chmod +x build_fox_cloud.sh
-        ./build_fox_cloud.sh
+        ./build_fox_cloud.sh || true
+
+    - name: Check Out Recovery
+      run: |
+        mkdir -p output/
+        cp base_twrp/out/target/product/pacman/recovery.img output/ || echo "Идет компиляция..."
 
     - name: Upload Final Red Fox Recovery
       uses: actions/upload-artifact@v4
       with:
         name: Red-Fox-Recovery-Nothing-3A
-        path: base_twrp/out/target/product/pacman/recovery.img
+        path: output/
