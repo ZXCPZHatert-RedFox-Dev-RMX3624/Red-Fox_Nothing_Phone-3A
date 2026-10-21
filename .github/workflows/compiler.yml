@@ -1,6 +1,3 @@
-    - name: Clone Toolchain & Manifests
-     run: |
-        git clone https://github.com -b twrp-14.0 base_twrp/
 name: Red Fox Recovery Auto-Compiler
 
 on:
@@ -40,5 +37,3 @@ jobs:
       with:
         name: Red-Fox-Recovery-Nothing-3A
         path: output/
-
-
