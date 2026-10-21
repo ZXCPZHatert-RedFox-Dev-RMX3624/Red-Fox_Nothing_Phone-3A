@@ -1,0 +1,8 @@
+# Display Settings for Nothing Phone (3a)
+ro.sf.lcd_density=450
+ro.screen.refresh_rate=120
+
+
+# Red Fox Recovery Independent Mode
+ro.redfox.browser=enabled
+ro.redfox.browser.package=links
